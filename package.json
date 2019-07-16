@@ -1,0 +1,36 @@
+{
+  "name": "hiring-chain",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-scripts": "3.0.1",
+    "history": "4.9.0",
+    "connected-react-router": "6.5.2",
+    "react-router-dom": "5.0.1",
+    "redux": "4.0.4",
+    "react-redux": "7.1.0",
+    "redux-saga": "1.0.5",
+    "styled-components": "4.3.2",
+    "arweave": "1.4.0"
+  },
+  "devDependencies": {
+    "arweave-deploy": "1.5.0"
+  },
+  "scripts": {
+    "start": "BROWSER=none npx react-scripts start",
+    "build": "npx react-scripts build",
+    "savekey": "npx arweave key-save ./arweave-keyfile.json",
+    "deploy": "npm run build && npx arweave deploy ./build/index.html --package",
+    "testpack": "npm run build && npx arweave package ./build/index.html output/index.html",
+    "serve": "npm run testpack && npx serve -s output"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
