@@ -7,21 +7,19 @@ import * as selectors from '../selectors';
 
 function* setup() {
     try {
-
         yield put(actions.arInitialized(arweave));
     } catch(err) {
-        console.log(err)
+        console.log(err);
         yield put(actions.arError(err));
     }
 }
 
 function* watchBallance() {
     try {
-
         while (true) {
             const address = yield select(selectors.address);
-
-            if (address === null) {
+            
+            if (!address) {
                 break;
             }
 
@@ -30,19 +28,18 @@ function* watchBallance() {
             yield delay(config.ballanceInterval);
         }        
     } catch(err) {
-        console.log(err)
+        console.log(err);
         yield put(actions.arError(err));
     }
 }
 
 function* login(action) {
     try {
-
         const address = yield getAddress(action.wallet);
         yield put(actions.arLoggedIn(address));
         yield watchBallance();
     } catch(err) {
-        console.log(err)
+        console.log(err);
         yield put(actions.arError(err));
     }
 }

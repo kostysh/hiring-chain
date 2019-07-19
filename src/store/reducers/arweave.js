@@ -25,6 +25,7 @@ export const reduce = (state = initialState, action = {}) => {
         case AR_SETUP:
             return {
                 ...state,
+                initialized: false,
                 loading: true,
                 arweave: null,
                 address: null,
@@ -35,6 +36,7 @@ export const reduce = (state = initialState, action = {}) => {
         case AR_INITIALIZED:
             return { 
                 ...state,
+                initialized: true,
                 loading: false,
                 arweave: action.arweave,
                 error: null 

@@ -10,4 +10,7 @@ export const arweave = Arweave.init({
 
 export const getAddress = async (wallet) => await arweave.wallets.jwkToAddress(wallet);
 
-export const getBalance = async (address) => await arweave.wallets.getBalance(address);
+export const getBalance = async (address) => {
+    const ballance = await arweave.wallets.getBalance(address);
+    return arweave.ar.winstonToAr(ballance);
+};
