@@ -32,10 +32,12 @@ h1, h2 {
     max-width: 80%;
 }
 
-@media (max-width: 540px) {
+@media (max-width: 1024px) {
     padding: 20px 10px;
     margin: 0;
+}
 
+@media (max-width: 540px) {    
     h1, h2 {
         margin: 0;
         max-width: 100%;
