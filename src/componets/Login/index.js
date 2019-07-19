@@ -21,14 +21,14 @@ display: none;
 height: 70px;
 left: 0;
 right: 0;
-bottom: -80px;
+bottom: -70px;
 padding: 5px;
 background-color: #fff7d7;
 box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
 cursor: initial;
 
 p {
-    font-size: 18px;
+    font-size: 16px;
     color: #4f4f4f;
     margin: 0 0 3px 0;
 
