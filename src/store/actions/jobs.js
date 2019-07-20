@@ -8,6 +8,9 @@ export const JOBS_FETCH = 'JOBS_FETCH';
 export const JOBS_RECEIVED = 'JOBS_RECEIVED';
 export const JOBS_CLOSE = 'JOBS_CLOSE';
 export const JOBS_CLOSED = 'JOBS_CLOSED';
+export const JOBS_FETCH_CACHE = 'JOBS_FETCH_CACHE';
+export const JOBS_FETCH_CACHE_RECEIVED = 'JOBS_FETCH_CACHE_RECEIVED';
+export const JOBS_UPDATE_QUERY = 'JOBS_UPDATE_QUERY';
 export const JOBS_ERROR = 'JOBS_ERROR';
 export const JOBS_ERROR_INVALIDATE = 'JOBS_ERROR_INVALIDATE';
 
@@ -19,6 +22,9 @@ export const jobsMined = id => action(JOBS_MINED, { id });
 export const jobsFiled = id => action(JOBS_FILED, { id });
 export const jobsClose = id => action(JOBS_CLOSE, { id });
 export const jobsClosed = id => action(JOBS_CLOSED, { id });
+export const jobsFetchCache = () => action(JOBS_FETCH_CACHE);
+export const jobsChacheReceived = store => action(JOBS_FETCH_CACHE_RECEIVED, { store });
+export const jobsUpdateQuery = query => action(JOBS_UPDATE_QUERY, { query });
 export const jobsError = error => action(JOBS_ERROR, { error });
 export const jobsErrorInvalidate = () => action(JOBS_ERROR_INVALIDATE);
 

@@ -1,12 +1,12 @@
 import {
-    JOBS_POST,
-    JOBS_SENT,
     JOBS_FETCH,
     JOBS_RECEIVED,
     JOBS_MINED,
-    JOBS_FILED,
     JOBS_CLOSE,
     JOBS_CLOSED,
+    JOBS_FETCH_CACHE,
+    JOBS_FETCH_CACHE_RECEIVED,
+    JOBS_UPDATE_QUERY,
     JOBS_ERROR,
     JOBS_ERROR_INVALIDATE,
     AR_LOG_OUT
@@ -14,8 +14,14 @@ import {
 
 const initialState = {
     loading: false,
+    cacheLoading: false,
     jobs: {},
+    cache: {},
     closing: [],
+    query: {
+        tag: '',
+        location: ''
+    },
     error: null
 };
 
@@ -37,6 +43,28 @@ export const reduce = (state = initialState, action = {}) => {
                     ...state.jobs,
                     ...action.store
                 }
+            };
+
+        case JOBS_FETCH_CACHE:
+                return {
+                    ...state,
+                    cacheLoading: true
+                };
+
+        case JOBS_FETCH_CACHE_RECEIVED:
+                return {
+                    ...state,
+                    cacheLoading: false,
+                    cache: {
+                        ...state.cache,
+                        ...action.store
+                    }
+                };
+
+        case JOBS_UPDATE_QUERY:
+            return {
+                ...state,
+                query: action.query
             };
 
         case JOBS_MINED:

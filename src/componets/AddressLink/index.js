@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import config from '../../config.json';
 import * as selectors from '../../store/selectors';
 
 import ArLogo from '../../assets/ar.png';
@@ -50,7 +51,7 @@ class AddressLink extends Component {
             return null;
         }
 
-        const url = `https://viewblock.io/arweave/address/${address}`;
+        const url = `https://${config.arscan}/address/${address}`;
 
         return (
             <Outer>

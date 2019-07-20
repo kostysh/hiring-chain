@@ -4,5 +4,7 @@
         "port": 443,
         "protocol": "https"
     },
-    "ballanceInterval": 5000
+    "ballanceInterval": 5000,
+    "arscan": "arscan.io",
+    "recentCount": 10
 }

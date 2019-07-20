@@ -21,7 +21,30 @@ export const postJob = async (job, wallet) => {
     return transaction;
 };
 
-export const fetchJobsIds = async (address) => {
+export const fetchJobsIds = async (address = null) => {
+
+    let typeExpr = {
+        op: 'and',
+        expr1: {
+            op: 'equals',
+            expr1: 'from',
+            expr2: address// Get ids from specific owner by default
+        },
+        expr2: {
+            op: 'equals',
+            expr1: 'Type',
+            expr2: 'hiringchain.job'
+        }                    
+    };
+
+    if (!address) {
+        typeExpr = {
+            op: 'equals',
+            expr1: 'Type',
+            expr2: 'hiringchain.job'                   
+        };
+    }
+
     return await arweave.arql({
         op: 'and',
         expr1: {
@@ -36,26 +59,36 @@ export const fetchJobsIds = async (address) => {
                 expr1: 'App-Version',
                 expr2: packageJson.version
             },
-            expr2: {
-                op: 'and',
-                expr1: {
-                    op: 'equals',
-                    expr1: 'from',
-                    expr2: address
-                },
-                expr2: {
-                    op: 'equals',
-                    expr1: 'Type',
-                    expr2: 'hiringchain.job'
-                }                    
-            }
+            expr2: typeExpr
         }
     });
     
     
 };
 
-export const fetchClosedJobsIds = async (address) => {
+export const fetchClosedJobsIds = async (address = null) => {
+    let typeExpr = {
+        op: 'and',
+        expr1: {
+            op: 'equals',
+            expr1: 'from',
+            expr2: address// Get ids from specific owner by default
+        },
+        expr2: {
+            op: 'equals',
+            expr1: 'Type',
+            expr2: 'hiringchain.job.close'
+        }                    
+    };
+
+    if (!address) {
+        typeExpr = {
+            op: 'equals',
+            expr1: 'Type',
+            expr2: 'hiringchain.job.close'                   
+        };
+    }
+
     const ids = await arweave.arql({
         op: 'and',
         expr1: {
@@ -70,19 +103,7 @@ export const fetchClosedJobsIds = async (address) => {
                 expr1: 'App-Version',
                 expr2: packageJson.version
             },
-            expr2: {
-                op: 'and',
-                expr1: {
-                    op: 'equals',
-                    expr1: 'from',
-                    expr2: address
-                },
-                expr2: {
-                    op: 'equals',
-                    expr1: 'Type',
-                    expr2: 'hiringchain.job.close'
-                }                    
-            }
+            expr2: typeExpr
         }
     });
     

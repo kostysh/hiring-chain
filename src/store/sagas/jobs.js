@@ -77,6 +77,17 @@ function* fetchJobs() {
     }
 }
 
+function* fetchJobsCache() {
+    try {
+        const ids = yield fetchJobsIds();
+        const store = yield convertIdsToStore(ids);
+        yield put(actions.jobsChacheReceived(store));
+    } catch(err) {
+        console.log(err);
+        yield put(actions.jobsError(err));
+    }
+}
+
 function* closeJob(action) {
     try {
         const wallet = yield select(selectors.wallet);
@@ -93,6 +104,7 @@ function* watchActions() {
     yield takeLatest(actions.JOBS_SENT, watchJobTransaction);
     yield takeLatest(actions.JOBS_FETCH, fetchJobs);
     yield takeLatest(actions.JOBS_CLOSE, closeJob);
+    yield takeLatest(actions.JOBS_FETCH_CACHE, fetchJobsCache);
 }
 
 export default [
