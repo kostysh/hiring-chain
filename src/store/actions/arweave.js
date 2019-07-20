@@ -12,7 +12,7 @@ export const AR_INVALIDATE_ERROR = 'AR_INVALIDATE_ERROR';
 export const arSetup = () => action(AR_SETUP);
 export const arInitialized = arweave => action(AR_INITIALIZED, { arweave });
 export const arLogin = wallet => action(AR_LOG_IN, { wallet });
-export const arLoggedIn = address => action(AR_LOGGED_IN, { address });
+export const arLoggedIn = (address, wallet) => action(AR_LOGGED_IN, { address, wallet });
 export const arBallance = ballance => action(AR_BALLANCE, { ballance });
 export const arLogOut = () => action(AR_LOG_OUT);
 export const arError = error => action(AR_ERROR, { error });

@@ -25,19 +25,22 @@ function* watchBallance() {
 
             const ballance = yield getBalance(address);
             yield put(actions.arBallance(ballance));
-            yield delay(config.ballanceInterval);
+            yield delay(config.ballanceInterval);            
         }        
     } catch(err) {
         console.log(err);
         yield put(actions.arError(err));
+        yield delay(config.ballanceInterval * 5);
+        yield watchBallance();
     }
 }
 
 function* login(action) {
     try {
         const address = yield getAddress(action.wallet);
-        yield put(actions.arLoggedIn(address));
-        yield watchBallance();
+        yield put(actions.arLoggedIn(address, action.wallet));
+        yield put(actions.jobsFetch(address));
+        yield watchBallance();        
     } catch(err) {
         console.log(err);
         yield put(actions.arError(err));

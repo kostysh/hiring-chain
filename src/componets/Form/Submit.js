@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 export default styled.button`
@@ -25,10 +24,4 @@ padding: ${({ size }) => {
 }};
 box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
 text-decoration: none;
-
-&:hover {
-    .tooltip {
-        display: block;
-    }
-}
 `;

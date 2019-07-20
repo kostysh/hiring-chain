@@ -8,6 +8,8 @@ export const arweave = Arweave.init({
     protocol: config.arweave.protocol
 });
 
+window.arweave = arweave;
+
 export const getAddress = async (wallet) => await arweave.wallets.jwkToAddress(wallet);
 
 export const getBalance = async (address) => {

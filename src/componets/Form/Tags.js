@@ -33,7 +33,7 @@ border-radius: 50%;
 font-size: 14px;
 color: #004DBC;
 text-align: center;
-line-height: 15px;
+line-height: 12px;
 margin-left: 5px;
 cursor: pointer;
 `;
@@ -65,7 +65,7 @@ export default class Tags extends Component {
 
     addTag = tag => {
         const { tagsChange = () => {} } = this.props;
-        tag = tag.trim();
+        tag = String(tag).replace(/(\b)(on\S+)(\s*)=|javascript:|(<\s*)(\/*)script/gim, '').trim();
 
         if (tag === '') {
             return;
@@ -103,6 +103,14 @@ export default class Tags extends Component {
         }
     };
 
+    handleOnBlur = e => {
+        const { inputValue } = this.state;
+
+        if (inputValue !== '') {
+            this.addTag(inputValue);
+        }
+    };
+
     render() {
         const { inputValue, tags } = this.state;
 
@@ -112,6 +120,7 @@ export default class Tags extends Component {
                     value={inputValue}
                     onChange={({ target: { value }}) => this.updateInputValue(value)}
                     onKeyDown={e => this.handleKeyDown(e)}
+                    onBlur={e => this.handleOnBlur(e)}
                     {...this.props}
                 />
                 <Pills 

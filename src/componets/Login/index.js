@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 
 import ArLogo from '../../assets/logo-arweave.png';
 import ArLogoSm from '../../assets/ar.png';
@@ -134,9 +135,10 @@ class Login extends Component {
     };
 
     logOut = () => {
-        const { arLogOut } = this.props;
+        const { arLogOut, goHome } = this.props;
         sessionStorage.removeItem('wallet');
         arLogOut();
+        goHome();
     };
 
     componentDidMount = () => {
@@ -193,7 +195,6 @@ function mapStateToProps(state) {
 
     return {
         arweaveLoading: selectors.arweaveLoading(state),
-        arweave: selectors.arweave(state),
         address: selectors.address(state)
     };
 }
@@ -203,7 +204,8 @@ const mapDispatchToProps = dispatch => {
     return {
         arLogin: wallet => dispatch(actions.arLogin(wallet)),
         arLogOut: () => dispatch(actions.arLogOut()),
-        arError: error => dispatch(actions.arError(error))
+        arError: error => dispatch(actions.arError(error)),
+        goHome: () => dispatch(push('/'))
     };
 };
 

@@ -4,5 +4,5 @@
         "port": 443,
         "protocol": "https"
     },
-    "ballanceInterval": 2000
+    "ballanceInterval": 5000
 }

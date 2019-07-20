@@ -14,6 +14,7 @@ const initialState = {
     loading: false,
     arweave: null,
     address: null,
+    wallet: null,
     ballance: 0,
     error: null
 };
@@ -29,6 +30,7 @@ export const reduce = (state = initialState, action = {}) => {
                 loading: true,
                 arweave: null,
                 address: null,
+                wallet: null,
                 ballance: 0,
                 error: null
             };
@@ -47,6 +49,7 @@ export const reduce = (state = initialState, action = {}) => {
                 ...state,
                 loading: true,
                 address: null,
+                wallet: null,
                 error: null
             };
 
@@ -55,6 +58,7 @@ export const reduce = (state = initialState, action = {}) => {
                 ...state,
                 loading: false,
                 address: action.address,
+                wallet: action.wallet,
                 error: null 
             };
 
@@ -70,6 +74,7 @@ export const reduce = (state = initialState, action = {}) => {
                 loading: false,
                 arweave: null,
                 address: null,
+                wallet: null,
                 ballance: 0,
                 error: null
             };
