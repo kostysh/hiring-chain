@@ -144,7 +144,7 @@ const processFile = (files, toggleLoading = () => {}, onLoaded = () => {}, onErr
         progress: prog => console.log(`ipfs received: ${prog}`)
     };
     
-    const ipfs = ipfsClient(config.ipfs);
+    const ipfs = ipfsClient(config.ipfs.config);
     
     ipfs.add(fileDetails, options)
         .then((response) => {

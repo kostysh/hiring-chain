@@ -86,11 +86,11 @@ export const reduce = (state = initialState, action = {}) => {
             };
 
         case JOBS_CLOSED:
-                return {
-                    ...state,
-                    closing: state.closing.filter(v => v !== action.id),
-                    jobs: Object.fromEntries(Object.entries(state.jobs).filter(v => v[0] !== action.id))
-                };
+            return {
+                ...state,
+                closing: state.closing.filter(v => v !== action.id),
+                jobs: Object.fromEntries(Object.entries(state.jobs).filter(v => v[0] !== action.id))
+            };
 
         case AR_LOG_OUT:
             return {

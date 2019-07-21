@@ -10,7 +10,7 @@ import RouteButton from '../../componets/RouteButton';
 import * as selectors from '../../store/selectors';
 import * as actions from '../../store/actions';
 
-const JobsTable = styled.table`
+const CvsTable = styled.table`
 width: 100%;
 border-collapse: collapse;
 
@@ -20,8 +20,8 @@ thead {
     th {
         padding: 10px 5px;
         color: #004dbc8a; 
-        text-align: left;
-    }    
+        text-align: left;       
+    }   
 }
 
 tbody {
@@ -32,7 +32,7 @@ tbody {
 }
 `;
 
-const CloseJob = styled.div`
+const CloseCv = styled.div`
 padding: 2px;
 width: 16px;
 height: 16px;
@@ -46,7 +46,7 @@ margin-left: 5px;
 cursor: pointer;
 `;
 
-const JobLink = styled.span`
+const CvLink = styled.span`
 color: #004DBC;
 cursor: pointer;
 `;
@@ -65,12 +65,22 @@ flex-direction: row;
 }
 `;
 
-class Jobs extends Component {
+const IpfsLink = styled.a`
+color: #004DBC;
 
-    closeJob = id => this.props.jobsClose(id);
+@media (max-width: 540px) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+`;
+
+class Cvs extends Component {
+
+    closeCv = id => this.props.cvsClose(id);
 
     render() {
-        const { jobs, closing, routePush } = this.props;
+        const { cvs, closing, routePush } = this.props;
 
         return (
             <Fragment>
@@ -78,7 +88,7 @@ class Jobs extends Component {
                     <TopContainer>
                         <div className="left">
                             <h2>
-                                Here is your posted jobs list. Pending postings are will be marked by a special indicator
+                                Here is your posted CVs list. Pending postings are will be marked by a special indicator                            
                             </h2>
                         </div>
                         <div className="right">
@@ -86,39 +96,41 @@ class Jobs extends Component {
                                 background="#FBFFE1"
                                 color="#3F3F3F"
                                 size="large"
-                                to="/job"
-                            >Post&nbsp;Job</RouteButton>
+                                to="/cv"
+                            >Post&nbsp;CV</RouteButton>
                         </div>
-                    </TopContainer>                                        
+                    </TopContainer>                    
                 </H1Section>
                 <H2Section>
-                    <JobsTable>
+                    <CvsTable>
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Location</th>
+                                <th>File</th>
                                 <th>Mined</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {jobs.map((job, i) => (
+                            {cvs.map((cv, i) => (
                                 <tr key={i}>
                                     <td>
-                                        <JobLink
-                                            onClick={() => routePush(`/job/${job.id}`)}
-                                        >{job.job.title}</JobLink>
+                                        <CvLink
+                                            onClick={() => routePush(`/cv/${cv.id}`)}
+                                        >{cv.cv.title}</CvLink>
                                     </td>
                                     <td>
-                                        {job.job.location}
-                                        {job.job.remote &&
-                                            <span>, Remote</span>
-                                        }
+                                        <IpfsLink
+                                            href={`${config.ipfs.gateway}/${cv.cv.ipfs}`}
+                                            rel="noopener noreferrer" 
+                                            target="_blank" 
+                                            title="CV file on the public IPFS gateway"
+                                        >{cv.cv.ipfs}</IpfsLink>
                                     </td>
                                     <td>
-                                        {job.mined ? 
+                                        {cv.mined ? 
                                             (<a
-                                                href={`https://${config.arscan}/transaction/${job.transaction.id}`}
+                                                href={`https://${config.arscan}/transaction/${cv.transaction.id}`}
                                                 rel="noopener noreferrer" 
                                                 target="_blank" 
                                                 title="Arweave Block Explorer"
@@ -126,20 +138,20 @@ class Jobs extends Component {
                                             (<Loader width="16px" height="16px" />)}
                                     </td>
                                     <td>
-                                        {(job.mined && !closing.includes(job.id)) &&
-                                            <CloseJob 
+                                        {(cv.mined && !closing.includes(cv.id)) &&
+                                            <CloseCv 
                                                 title="Close"
-                                                onClick={() => this.closeJob(job.id)}
-                                            >x</CloseJob>
+                                                onClick={() => this.closeCv(cv.id)}
+                                            >x</CloseCv>
                                         }
-                                        {(job.mined && closing.includes(job.id)) &&
+                                        {(cv.mined && closing.includes(cv.id)) &&
                                             <Loader width="16px" height="16px" />
                                         }
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
-                    </JobsTable>
+                    </CvsTable>
                 </H2Section>
                 <H3Section>
                     
@@ -152,28 +164,28 @@ class Jobs extends Component {
 function mapStateToProps(state) {
 
     return {
-        jobs: selectors.jobs(state),
-        closing: selectors.jobsClosing(state)
+        cvs: selectors.cvs(state),
+        closing: selectors.cvsClosing(state)
     };
 };
 
 const mapDispatchToProps = dispatch => {
 
     return {
-        jobsClose: id => dispatch(actions.jobsClose(id)),
+        cvsClose: id => dispatch(actions.cvsClose(id)),
         routePush: newRoute => dispatch(push(newRoute))
     };
 };
 
-const connectedJobs = connect(mapStateToProps, mapDispatchToProps)(Jobs);
+const connectedCvs = connect(mapStateToProps, mapDispatchToProps)(Cvs);
 
-export default connectedJobs;
+export default connectedCvs;
 
 export const route = [
     {
-        path: '/jobs',
+        path: '/cvs',
         exact: true,
-        label: 'My Jobs',
-        component: connectedJobs
+        label: 'My CVs',
+        component: connectedCvs
     }
 ];

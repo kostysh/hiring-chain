@@ -8,8 +8,11 @@
     "arscan": "arscan.io",
     "recentCount": 10,
     "ipfs": {
-        "host": "ipfs.infura.io",
-        "port": "5001",
-        "protocol": "https"
+        "config": {
+            "host": "ipfs.infura.io",
+            "port": "5001",
+            "protocol": "https"
+        },
+        "gateway": "https://ipfs.infura.io/ipfs"
     }
 }

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import styled from 'styled-components';
 
 import { H1Section, H2Section, H3Section, H4Section } from '../../componets/Layout';
@@ -144,15 +145,15 @@ class Cv extends Component {
     vaidateForm = () => Promise.all(Object.keys(Cv.model).map(field => this.validateField(field)));
 
     submitForm = () => this.resetError(() => {
-        const { address, cvPost, goCvsPage } = this.props;
+        const { address, cvsPost, goCvsPage } = this.props;
 
         if (!address) {
             return this.setState({ error: `You should be logged in to do an action!` });
         }
 
         this.vaidateForm()
-            .then(() => cvPost(this.state.values))
-            // .then(() => goCvsPage())
+            .then(() => cvsPost(this.state.values))
+            .then(() => goCvsPage())
             .catch(error => this.setState({ error: error.message }));
     });
 
@@ -246,7 +247,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch => {
 
     return {
-        
+        cvsPost: cv => dispatch(actions.cvsPost(cv)),
+        goCvsPage: () => dispatch(push('/cvs'))
     };
 };
 

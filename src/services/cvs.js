@@ -2,14 +2,15 @@ import { arweave } from './arweave';
 
 import packageJson from '../../package.json';
 
-export const postJob = async (job, wallet) => {
+export const postCv = async (cv, wallet) => {
     const transaction = await arweave.createTransaction({
-        data: JSON.stringify(job),
+        data: JSON.stringify(cv),
     }, wallet);
     transaction.addTag('App-Name', packageJson.name);
     transaction.addTag('App-Version', packageJson.version);
     transaction.addTag('Unix-Time', Math.round((new Date()).getTime() / 1000));
-    transaction.addTag('Type', 'hiringchain.job');
+    transaction.addTag('Type', 'hiringchain.cv');
+    transaction.addTag('IPFS-Add', cv.ipfs);
 
     await arweave.transactions.sign(transaction, wallet);
     const response = await arweave.transactions.post(transaction);
@@ -21,7 +22,27 @@ export const postJob = async (job, wallet) => {
     return transaction;
 };
 
-export const fetchJobsIds = async (address = null) => {
+export const closeCvById = async (id, wallet) => {
+    const transaction = await arweave.createTransaction({
+        data: id,
+    }, wallet);
+    transaction.addTag('App-Name', packageJson.name);
+    transaction.addTag('App-Version', packageJson.version);
+    transaction.addTag('Unix-Time', Math.round((new Date()).getTime() / 1000));
+    transaction.addTag('Type', 'hiringchain.cv.close');
+    transaction.addTag('Cv', id);
+
+    await arweave.transactions.sign(transaction, wallet);
+    const response = await arweave.transactions.post(transaction);
+
+    if (response.status === 400 || response.status === 500) {
+        throw new Error('Transaction failed');
+    }
+
+    return transaction;
+};
+
+export const fetchCvsIds = async (address = null) => {
 
     let typeExpr = {
         op: 'and',
@@ -33,7 +54,7 @@ export const fetchJobsIds = async (address = null) => {
         expr2: {
             op: 'equals',
             expr1: 'Type',
-            expr2: 'hiringchain.job'
+            expr2: 'hiringchain.cv'
         }                    
     };
 
@@ -41,7 +62,7 @@ export const fetchJobsIds = async (address = null) => {
         typeExpr = {
             op: 'equals',
             expr1: 'Type',
-            expr2: 'hiringchain.job'                   
+            expr2: 'hiringchain.cv'                   
         };
     }
 
@@ -64,7 +85,7 @@ export const fetchJobsIds = async (address = null) => {
     });
 };
 
-export const fetchClosedJobsIds = async (address = null) => {
+export const fetchClosedCvsIds = async (address = null) => {
     let typeExpr = {
         op: 'and',
         expr1: {
@@ -75,7 +96,7 @@ export const fetchClosedJobsIds = async (address = null) => {
         expr2: {
             op: 'equals',
             expr1: 'Type',
-            expr2: 'hiringchain.job.close'
+            expr2: 'hiringchain.cv.close'
         }                    
     };
 
@@ -83,7 +104,7 @@ export const fetchClosedJobsIds = async (address = null) => {
         typeExpr = {
             op: 'equals',
             expr1: 'Type',
-            expr2: 'hiringchain.job.close'                   
+            expr2: 'hiringchain.cv.close'                   
         };
     }
 
@@ -107,7 +128,7 @@ export const fetchClosedJobsIds = async (address = null) => {
     
     const transactions = await Promise.all(ids.map(id => arweave.transactions.get(id)));
 
-    return transactions.map(tx => getTagValue(tx, 'Job'));
+    return transactions.map(tx => getTagValue(tx, 'Cv'));
 };
 
 export const isTransactionMined = async (id) => {
@@ -150,7 +171,7 @@ export const convertIdsToStore = async (ids, address, notMined = false) => {
             time: Number(getTagValue(tx, 'Unix-Time')),
             mined: !notMined,
             closed: false,
-            job: JSON.parse(tx.get('data', {
+            cv: JSON.parse(tx.get('data', {
                 decode: true, 
                 string: true
             })),
@@ -164,7 +185,7 @@ export const convertIdsToStore = async (ids, address, notMined = false) => {
     }
 
     // get extensions
-    const closedIds = await fetchClosedJobsIds(address);
+    const closedIds = await fetchClosedCvsIds(address);
 
     if (closedIds.length > 0) {
         hashedObj = Object.fromEntries(Object.entries(hashedObj).filter(v => !closedIds.includes(v[0])));
@@ -173,27 +194,7 @@ export const convertIdsToStore = async (ids, address, notMined = false) => {
     return hashedObj;
 };
 
-export const closeJobById = async (id, wallet) => {
-    const transaction = await arweave.createTransaction({
-        data: id,
-    }, wallet);
-    transaction.addTag('App-Name', packageJson.name);
-    transaction.addTag('App-Version', packageJson.version);
-    transaction.addTag('Unix-Time', Math.round((new Date()).getTime() / 1000));
-    transaction.addTag('Type', 'hiringchain.job.close');
-    transaction.addTag('Job', id);
-
-    await arweave.transactions.sign(transaction, wallet);
-    const response = await arweave.transactions.post(transaction);
-
-    if (response.status === 400 || response.status === 500) {
-        throw new Error('Transaction failed');
-    }
-
-    return transaction;
-};
-
-export const getJobById = async (id) => {
+export const getCvById = async (id) => {
     const transaction = await arweave.transactions.get(id);
     const closedIds = await arweave.arql({
         op: 'and',
@@ -213,13 +214,13 @@ export const getJobById = async (id) => {
                 op: 'and',
                 expr1: {
                     op: 'equals',
-                    expr1: 'Job',
+                    expr1: 'Cv',
                     expr2: transaction.get('id')
                 },
                 expr2: {
                     op: 'equals',
                     expr1: 'Type',
-                    expr2: 'hiringchain.job.close'
+                    expr2: 'hiringchain.cv.close'
                 }                    
             }
         }

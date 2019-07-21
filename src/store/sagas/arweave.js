@@ -40,6 +40,7 @@ function* login(action) {
         const address = yield getAddress(action.wallet);
         yield put(actions.arLoggedIn(address, action.wallet));
         yield put(actions.jobsFetch(address));
+        yield put(actions.cvsFetch(address));
         yield watchBallance();        
     } catch(err) {
         console.log(err);
