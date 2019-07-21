@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import styled from 'styled-components';
 
 import { H1Section, H2Section, H3Section } from '../../componets/Layout';
@@ -146,7 +147,7 @@ tbody {
 }
 `;
 
-const SearchResults = ( { jobs }) => {
+const SearchResults = ( { jobs, routePush }) => {
 
     return (
         <Fragment>
@@ -175,6 +176,7 @@ const SearchResults = ( { jobs }) => {
                         </td>
                         <td>
                             <Apply
+                                onClick={() => routePush(`/job/${job.id}`)}
                                 background="#004DBC"
                                 color="white"
                                 size="small"
@@ -191,7 +193,7 @@ const SearchResults = ( { jobs }) => {
 class Home extends Component {
 
     render() {
-        const { jobsCache } = this.props;
+        const { jobsCache, routePush } = this.props;
 
         return (
             <Fragment>
@@ -222,6 +224,7 @@ class Home extends Component {
                 <H3Section>
                     <SearchResults 
                         jobs={jobsCache}
+                        routePush={routePush}
                     />
                 </H3Section>
             </Fragment>
@@ -239,7 +242,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch => {
 
     return {
-        
+        routePush: newRoute => dispatch(push(newRoute))
     };
 };
 

@@ -6,5 +6,10 @@
     },
     "ballanceInterval": 5000,
     "arscan": "arscan.io",
-    "recentCount": 10
+    "recentCount": 10,
+    "ipfs": {
+        "host": "ipfs.infura.io",
+        "port": "5001",
+        "protocol": "https"
+    }
 }

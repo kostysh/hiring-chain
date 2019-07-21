@@ -193,3 +193,46 @@ export const closeJobById = async (id, wallet) => {
 
     return transaction;
 };
+
+export const getJobById = async (id) => {
+    const transaction = await arweave.transactions.get(id);
+    const closedIds = await arweave.arql({
+        op: 'and',
+        expr1: {
+            op: 'equals',
+            expr1: 'App-Name',
+            expr2: packageJson.name
+        },
+        expr2: {
+            op: 'and',
+            expr1: {
+                op: 'equals',
+                expr1: 'App-Version',
+                expr2: packageJson.version
+            },
+            expr2: {
+                op: 'and',
+                expr1: {
+                    op: 'equals',
+                    expr1: 'Job',
+                    expr2: transaction.get('id')
+                },
+                expr2: {
+                    op: 'equals',
+                    expr1: 'Type',
+                    expr2: 'hiringchain.job.close'
+                }                    
+            }
+        }
+    });
+
+    return {
+        id: transaction.get('id'),
+        time: Number(getTagValue(transaction, 'Unix-Time')),
+        closed: closedIds && closedIds.length === 1,
+        ...JSON.parse(transaction.get('data', {
+            decode: true, 
+            string: true
+        }))
+    }
+};

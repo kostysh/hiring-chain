@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import styled from 'styled-components';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 
 import { H1Section, H2Section, H3Section, H4Section } from '../../componets/Layout';
 import Field from '../../componets/Form/Field';
@@ -157,7 +157,7 @@ class Job extends Component {
         const { address, jobsPost, goJobsPage } = this.props;
 
         if (!address) {
-            return this.addError(`You should be logged in to do an action!`);
+            return this.setState({ error: `You should be logged in to do an action!` });
         }
 
         this.vaidateForm()

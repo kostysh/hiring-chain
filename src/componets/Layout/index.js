@@ -74,20 +74,28 @@ export const H1Section = styled(Section)`
 background-color: #7AADF6;
 
 @media (max-width: 540px) {
-    h1 {
-        margin-bottom: 20px;
-    }
+h1 {
+    margin-bottom: 20px;
+}
 }
 `;
 
 export const H2Section = styled(Section)`
 background-color: #DBEAFF;
-
+h2 {
+    margin-top: 5px;
+    margin-bottom: 0;
+    color: #7AADF6;
+}
 `;
 
 export const H3Section = styled(Section)`
 background-color: whitesmoke;
-
+p {
+    margin-top: 5px;
+    margin-bottom: 0;
+    color: #7AADF6;
+}
 `;
 
 export const H4Section = styled(Section)`

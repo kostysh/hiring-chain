@@ -38,7 +38,7 @@ margin-left: 5px;
 cursor: pointer;
 `;
 
-const Pills = ({ tags, removeTag = () => {} }) => {
+const Pills = ({ type, tags, removeTag = () => {} }) => {
 
     return (
         <Fragment>
@@ -46,7 +46,18 @@ const Pills = ({ tags, removeTag = () => {} }) => {
                 tags.map((tag, i) => (
                     <Tag key={i}>
                         <TagInner>
-                            <Label>{tag}</Label>
+                            {type === 'links' &&
+                                <a
+                                    href={tag}
+                                    rel="noopener noreferrer" 
+                                    target="_blank"
+                                >
+                                    <Label>{tag}</Label>
+                                </a>
+                            }
+                            {type !== 'links' &&
+                                <Label>{tag}</Label>   
+                            }                            
                             <Remove onClick={() => removeTag(i)}>x</Remove>
                         </TagInner>
                     </Tag>
@@ -113,6 +124,7 @@ export default class Tags extends Component {
 
     render() {
         const { inputValue, tags } = this.state;
+        const { type } = this.props;
 
         return (
             <Fragment>
@@ -124,6 +136,7 @@ export default class Tags extends Component {
                     {...this.props}
                 />
                 <Pills 
+                    type={type}
                     tags={tags} 
                     removeTag={tagId => this.removeTag(tagId)}
                 />

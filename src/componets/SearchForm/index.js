@@ -72,7 +72,13 @@ class SearchForm extends Component {
         [name]: value
     });
 
-    componentDidMount = () => setTimeout(() => this.props.jobsFetchCache(), 1000);
+    componentDidMount = () => {
+        const { jobsCache } = this.props;
+
+        if (jobsCache.length === 0) {
+            setTimeout(() => this.props.jobsFetchCache(), 1000)
+        }        
+    };
     
     render() {
         const { jobsCacheLoading, query } = this.props;
@@ -96,7 +102,7 @@ class SearchForm extends Component {
                 }
                 {!jobsCacheLoading &&
                     <Submit 
-                        onClick={() => this.toggleLoading()}
+                        onClick={() => {}}
                     />
                 }            
             </SearchFormOuter>
@@ -108,6 +114,7 @@ function mapStateToProps(state) {
 
     return {
         jobsCacheLoading: selectors.jobsCacheLoading(state),
+        jobsCache: selectors.jobsCache(state),
         query: selectors.jobsQuery(state)
     };
 };

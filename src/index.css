@@ -1,5 +1,11 @@
 html {
-    box-sizing: border-box;
+    box-sizing: border-box;    
+}
+
+* {
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 *, *:before, *:after {
@@ -21,8 +27,5 @@ img {
 }
 
 body {
-    overflow-x: hidden;
-    font-family: "Roboto", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;    
 }

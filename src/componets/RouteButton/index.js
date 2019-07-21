@@ -57,10 +57,10 @@ text-decoration: none;
 const ButtonTooltip = styled.div`
 position: absolute;
 display: none;
-height: 45px;
+height: 59px;
 left: 0;
 right: 0;
-bottom: -56px;
+bottom: -60px;
 padding: 5px 10px;
 background-color: whitesmoke;
 box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
