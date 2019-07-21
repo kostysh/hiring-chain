@@ -57,6 +57,10 @@ cursor: pointer;
 &:hover {
     background-color: rgba(0,77,188,1);
 }
+
+@media (max-width: 540px) {
+    display: none;
+}
 `;
 
 const Loading = styled(Loader)`

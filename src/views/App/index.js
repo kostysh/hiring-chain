@@ -6,6 +6,7 @@ import routes from '../../router';
 
 import { Page, Header, Footer, SpaceSection } from '../../componets/Layout';
 import Login from '../../componets/Login';
+import Menu from '../../componets/Menu';
 
 const Logo = styled(Link)`
 font-family: 'Rubik', sans-serif;
@@ -50,6 +51,7 @@ export default class App extends Component {
                 <Header>
                     <Logo to="/">HiringChain</Logo>
                     <Toolbar>
+                        <Menu />
                         <Login />
                     </Toolbar>
                 </Header>
