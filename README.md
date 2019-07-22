@@ -4,7 +4,7 @@ A simple hiring Dapp on the Arweave blockchain
 > This demo application is made according to [Open Web Hackathon: Build A Simple Permaweb App](https://gitcoin.co/issue/ArweaveTeam/Bounties/1/3184)  
 
 - You can look thru published jobs on the Home screen, search by them, view details
-- You should be looged in into Dapp to make postings  
+- You should be logged in into Dapp to make postings  
 - You can publish your own resumes and jobs
 - You can remove your own published jobs and CVs
 - You can make an application on the published job (job owner will see your application in jobs list)
