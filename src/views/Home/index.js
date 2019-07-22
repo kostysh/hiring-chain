@@ -180,7 +180,7 @@ const SearchResults = ( { jobs, routePush }) => {
                                 background="#004DBC"
                                 color="white"
                                 size="small"
-                            >Apply</Apply>
+                            >Details</Apply>
                         </td>
                     </tr>
                 ))}

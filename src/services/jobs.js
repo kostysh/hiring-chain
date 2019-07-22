@@ -110,6 +110,47 @@ export const fetchClosedJobsIds = async (address = null) => {
     return transactions.map(tx => getTagValue(tx, 'Job'));
 };
 
+export const fetchAppliedCvsIds = async (jobId) => {
+
+    const ids = await arweave.arql({
+        op: 'and',
+        expr1: {
+            op: 'equals',
+            expr1: 'App-Name',
+            expr2: packageJson.name
+        },
+        expr2: {
+            op: 'and',
+            expr1: {
+                op: 'equals',
+                expr1: 'App-Version',
+                expr2: packageJson.version
+            },
+            expr2: {
+                op: 'and',
+                expr1: {
+                    op: 'equals',
+                    expr1: 'Job',
+                    expr2: jobId
+                },
+                expr2: {
+                    op: 'equals',
+                    expr1: 'Type',
+                    expr2: 'hiringchain.cv.apply'
+                }                    
+            }
+        }
+    });
+
+    const transactions = await Promise.all(ids.map(id => arweave.transactions.get(id)));
+
+    let cvIds = [];
+
+    transactions.forEach(tx => cvIds.push(getTagValue(tx, 'Cv')));
+
+    return cvIds;
+};
+
 export const isTransactionMined = async (id) => {
     const { status, confirmed } = await arweave.transactions.getStatus(id);
 
@@ -142,7 +183,7 @@ export const convertIdsToStore = async (ids, address, notMined = false) => {
         }
 
         return arweave.transactions.get(id);
-    }));
+    }));    
     const dataset = transactions.map(tx => ([
         tx.get('id'),
         {
@@ -165,12 +206,17 @@ export const convertIdsToStore = async (ids, address, notMined = false) => {
 
     // get extensions
     const closedIds = await fetchClosedJobsIds(address);
-
+    
     if (closedIds.length > 0) {
         hashedObj = Object.fromEntries(Object.entries(hashedObj).filter(v => !closedIds.includes(v[0])));
     }
 
-    return hashedObj;
+    const applications = await Promise.all(Object.entries(hashedObj).map(async (v) => {
+        v[1].applied = await fetchAppliedCvsIds(v[0]);
+        return v;
+    }));
+
+    return Object.fromEntries(applications);
 };
 
 export const closeJobById = async (id, wallet) => {

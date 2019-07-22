@@ -1,6 +1,7 @@
 import { select, put, fork, takeLatest, delay } from 'redux-saga/effects';
 import {
     postCv, 
+    postApplyCv,
     isTransactionMined, 
     convertIdsToStore,
     fetchCvsIds,
@@ -23,7 +24,7 @@ function* watchCvsTransaction(action) {
                 break;
             }
             
-            yield delay(config.ballanceInterval);            
+            yield delay(config.ballanceInterval * 5);            
         }        
     } catch(err) {
         console.log(err);
@@ -44,12 +45,34 @@ function* watchCvCloseTransaction(transaction) {
                 break;
             }
             
-            yield delay(config.ballanceInterval);            
+            yield delay(config.ballanceInterval * 5);            
         }        
     } catch(err) {
         console.log(err);
         yield put(actions.cvsError(err));
         yield watchCvCloseTransaction(transaction);
+    }
+}
+
+function* watchApplyTransaction(action) {
+    yield delay(config.ballanceInterval);// to avoid 404 error
+    try {
+        while (true) {
+            const mined = yield isTransactionMined(action.transaction.id);
+
+            if (mined) {
+                const cvId = getTagValue(action.transaction, 'Cv');
+                const jobId = getTagValue(action.transaction, 'Job');
+                yield put(actions.cvsApplyDone(cvId, jobId));
+                break;
+            }
+            
+            yield delay(config.ballanceInterval * 5);            
+        }        
+    } catch(err) {
+        console.log(err);
+        yield put(actions.cvsError(err));
+        yield watchApplyTransaction(action);
     }
 }
 
@@ -90,11 +113,24 @@ function* closeCv(action) {
     }
 }
 
+function* applyCv(action) {
+    try {
+        const wallet = yield select(selectors.wallet);
+        const transaction = yield postApplyCv(action.cv, action.job, wallet);
+        yield put(actions.cvsApplySent(transaction));
+    } catch(err) {
+        console.log(err);
+        yield put(actions.cvsError(err));
+    }
+}
+
 function* watchActions() {
     yield takeLatest(actions.CVS_POST, cvsPost);
     yield takeLatest(actions.CVS_SENT, watchCvsTransaction);
     yield takeLatest(actions.CVS_FETCH, fetchCvs);
     yield takeLatest(actions.CVS_CLOSE, closeCv);
+    yield takeLatest(actions.CVS_APPLY, applyCv);
+    yield takeLatest(actions.CVS_APPLY_SENT, watchApplyTransaction);
 }
 
 export default [

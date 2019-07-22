@@ -65,6 +65,17 @@ flex-direction: row;
 }
 `;
 
+const CvLink = styled.span`
+color: #004DBC;
+cursor: pointer;
+`;
+
+const AppliedList = styled.ul`
+list-style-type: none;
+margin: 0;
+padding: 0;
+`;
+
 class Jobs extends Component {
 
     closeJob = id => this.props.jobsClose(id);
@@ -97,6 +108,7 @@ class Jobs extends Component {
                             <tr>
                                 <th>Title</th>
                                 <th>Location</th>
+                                <th>Applications</th>
                                 <th>Mined</th>
                                 <th>Actions</th>
                             </tr>
@@ -113,6 +125,19 @@ class Jobs extends Component {
                                         {job.job.location}
                                         {job.job.remote &&
                                             <span>, Remote</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        {(job.applied && job.applied.length > 0) &&
+                                            <AppliedList>
+                                                {job.applied.map((a, i) => (
+                                                    <li key={i}>
+                                                        <CvLink
+                                                            onClick={() => routePush(`/cv/${a}`)}
+                                                        >&#10004;</CvLink>
+                                                    </li>
+                                                ))}
+                                            </AppliedList>
                                         }
                                     </td>
                                     <td>

@@ -4,6 +4,8 @@ import {
     CVS_RECEIVED,
     CVS_CLOSE,
     CVS_CLOSED,
+    CVS_APPLY,
+    CVS_APPLY_DONE,
     CVS_ERROR,
     CVS_ERROR_INVALIDATE,
     AR_LOG_OUT
@@ -13,12 +15,30 @@ const initialState = {
     loading: false,
     cvs: {},
     closing: [],
+    apply: [],
+    applied: {},
     error: null
 };
 
 export const reduce = (state = initialState, action = {}) => {
 
     switch (action.type) {
+
+        case CVS_APPLY:
+            return {
+                ...state,
+                apply: [...state.apply, action.cv]
+            };
+
+        case CVS_APPLY_DONE:
+            return {
+                ...state,
+                apply: state.apply.filter(a => a !== action.cv),
+                applied: {
+                    ...state.applied,
+                    [action.cv]: action.job
+                }
+            };
 
         case CVS_MINED:
             return {

@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Spacer from '../Spacer';
 import * as selectors from '../../store/selectors';
-import * as actions from '../../store/actions';
+// import * as actions from '../../store/actions';
 
 const MenuOuter = styled.ul`
 list-style-type: none;

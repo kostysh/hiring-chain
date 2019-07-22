@@ -75,6 +75,12 @@ color: #004DBC;
 }
 `;
 
+const AppliedList = styled.ul`
+list-style-type: none;
+margin: 0;
+padding: 0;
+`;
+
 class Cvs extends Component {
 
     closeCv = id => this.props.cvsClose(id);
@@ -107,6 +113,7 @@ class Cvs extends Component {
                             <tr>
                                 <th>Title</th>
                                 <th>File</th>
+                                <th>Applications</th>
                                 <th>Mined</th>
                                 <th>Actions</th>
                             </tr>
@@ -126,6 +133,19 @@ class Cvs extends Component {
                                             target="_blank" 
                                             title="CV file on the public IPFS gateway"
                                         >{cv.cv.ipfs}</IpfsLink>
+                                    </td>
+                                    <td>
+                                        {(cv.applied && cv.applied.length > 0) &&
+                                            <AppliedList>
+                                                {cv.applied.map((a, i) => (
+                                                    <li key={i}>
+                                                        <CvLink
+                                                            onClick={() => routePush(`/job/${a}`)}
+                                                        >&#10004;</CvLink>
+                                                    </li>
+                                                ))}
+                                            </AppliedList>
+                                        }
                                     </td>
                                     <td>
                                         {cv.mined ? 

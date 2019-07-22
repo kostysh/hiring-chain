@@ -22,6 +22,30 @@ export const postCv = async (cv, wallet) => {
     return transaction;
 };
 
+export const postApplyCv = async (cv, job, wallet) => {
+    const transaction = await arweave.createTransaction({
+        data: JSON.stringify({
+            cv,
+            job
+        }),
+    }, wallet);
+    transaction.addTag('App-Name', packageJson.name);
+    transaction.addTag('App-Version', packageJson.version);
+    transaction.addTag('Unix-Time', Math.round((new Date()).getTime() / 1000));
+    transaction.addTag('Type', 'hiringchain.cv.apply');
+    transaction.addTag('Cv', cv);
+    transaction.addTag('Job', job);
+
+    await arweave.transactions.sign(transaction, wallet);
+    const response = await arweave.transactions.post(transaction);
+
+    if (response.status === 400 || response.status === 500) {
+        throw new Error('Transaction failed');
+    }
+
+    return transaction;
+};
+
 export const closeCvById = async (id, wallet) => {
     const transaction = await arweave.createTransaction({
         data: id,
@@ -131,6 +155,56 @@ export const fetchClosedCvsIds = async (address = null) => {
     return transactions.map(tx => getTagValue(tx, 'Cv'));
 };
 
+export const fetchAppliedCvsIds = async (address = null) => {
+
+    let typeExpr = {
+        op: 'and',
+        expr1: {
+            op: 'equals',
+            expr1: 'from',
+            expr2: address// Get ids from specific owner by default
+        },
+        expr2: {
+            op: 'equals',
+            expr1: 'Type',
+            expr2: 'hiringchain.cv.apply'
+        }                    
+    };
+
+    if (!address) {
+        typeExpr = {
+            op: 'equals',
+            expr1: 'Type',
+            expr2: 'hiringchain.cv.apply'                   
+        };
+    }
+
+    const ids = await arweave.arql({
+        op: 'and',
+        expr1: {
+            op: 'equals',
+            expr1: 'App-Name',
+            expr2: packageJson.name
+        },
+        expr2: {
+            op: 'and',
+            expr1: {
+                op: 'equals',
+                expr1: 'App-Version',
+                expr2: packageJson.version
+            },
+            expr2: typeExpr
+        }
+    });
+
+    const transactions = await Promise.all(ids.map(id => arweave.transactions.get(id)));
+
+    return transactions.map(tx => ({
+        cv: getTagValue(tx, 'Cv'),
+        job: getTagValue(tx, 'Job')
+    }));
+};
+
 export const isTransactionMined = async (id) => {
     const { status, confirmed } = await arweave.transactions.getStatus(id);
 
@@ -186,9 +260,21 @@ export const convertIdsToStore = async (ids, address, notMined = false) => {
 
     // get extensions
     const closedIds = await fetchClosedCvsIds(address);
+    const appliedIds = await fetchAppliedCvsIds(address);
 
     if (closedIds.length > 0) {
         hashedObj = Object.fromEntries(Object.entries(hashedObj).filter(v => !closedIds.includes(v[0])));
+    }
+
+    if (appliedIds.length > 0) {
+        appliedIds.forEach(a => {
+
+            if (hashedObj[a.cv]) {
+                const applied = hashedObj[a.cv].applied || [];
+                applied.push(a.job);
+                hashedObj[a.cv].applied = applied;
+            }
+        }); 
     }
 
     return hashedObj;

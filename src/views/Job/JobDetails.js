@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import { H1Section, H2Section, H3Section } from '../../componets/Layout';
 import ArLink from '../../componets/ArLink';
@@ -8,6 +9,7 @@ import Loader from '../../componets/Loader';
 import Spacer from '../../componets/Spacer';
 import { getJobById } from '../../services/jobs';
 import * as selectors from '../../store/selectors';
+import * as actions from '../../store/actions';
 
 const Loading = styled(Loader)`
 margin: 40px auto;
@@ -132,6 +134,32 @@ cursor: initial;
 }
 `;
 
+const ApplyInner = styled.div`
+background-color: whitesmoke;
+box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+width: 300px;
+float: right;
+padding: 10px;
+text-align: left;
+font-size: 12px;
+color: #4f4f4f;
+
+h3 {
+    margin-top: 0;
+}
+`;
+
+const ApplyTooltip = styled.div`
+position: absolute;
+height: auto;
+left: 0;
+right: 0;
+
+@media (max-width: 540px) {
+    
+}
+`;
+
 const TitleContainer = styled.div`
 display: flex;
 flex-direction: row;
@@ -147,17 +175,48 @@ div {
 }
 `;
 
+const CvList = styled.ul`
+list-style-type: none;
+margin: 0;
+padding: 0;
+`;
+
+const CvLabel = styled.span`
+display: flex;
+flex-direction: row;
+align-items: center;
+font-size: 14px;
+color: #004DBC;
+text-decoration: underline;
+cursor: pointer;
+
+&:hover {
+    color: #7AADF6;
+}
+`;
+
+const CvLoading = styled(Loader)`
+width: 14px;
+height: 14px;
+`;
+
 class Apply extends Component {
+    state = {
+        opened: false
+    };
+
     render() {
-        const { address, job } = this.props;
+        const { address, cvs, cvsApplyProcess, applied, cvsApplyAction, job } = this.props;
+        const { opened } = this.state;
 
         return (
             <Fragment>
                 <Button
-                    disabled={!!address}
+                    disabled={!!!address || !cvs || cvs.length === 0}
                     background="#004DBC"
                     color="white"
                     size="large"
+                    onClick={() => this.setState({ opened: !opened })}
                 >
                     Apply
                     {!address &&
@@ -165,7 +224,36 @@ class Apply extends Component {
                             You should be logged in to do an action
                         </ButtonTooltip>
                     }
+                    {(address && (!cvs || cvs.length === 0)) &&
+                        <ButtonTooltip className="tooltip">
+                            You should post your CV first <Link to="/cv">here</Link>
+                        </ButtonTooltip>
+                    }                    
                 </Button>
+                {opened &&
+                    <ApplyTooltip>
+                        <ApplyInner>
+                            <h3>Choose you CV to apply</h3>
+                            <CvList>
+                                {cvs.map((cv, i) => (
+                                    <li key={i}>
+                                        <CvLabel
+                                            onClick={() => cvsApplyAction(cv.id, job.id)}
+                                        >
+                                            {cv.cv.title}
+                                            {cvsApplyProcess.includes(cv.id) &&
+                                                <CvLoading />
+                                            }
+                                            {(applied && applied[cv.id]) &&
+                                                <span> - done</span>
+                                            }
+                                        </CvLabel>
+                                    </li>
+                                ))}
+                            </CvList>
+                        </ApplyInner>                        
+                    </ApplyTooltip>
+                }
             </Fragment>
         );
     }
@@ -174,14 +262,17 @@ class Apply extends Component {
 function mapStateToProps(state) {
 
     return {
-        address: selectors.address(state)
+        address: selectors.address(state),
+        cvs: selectors.cvs(state),
+        cvsApplyProcess: selectors.cvsApply(state),
+        applied: selectors.applied(state)
     };
 };
 
 const mapDispatchToProps = dispatch => {
 
     return {
-        
+        cvsApplyAction: (cv, job) => dispatch(actions.cvsApply(cv, job))
     };
 };
 
