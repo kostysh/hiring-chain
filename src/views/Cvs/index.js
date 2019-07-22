@@ -4,7 +4,7 @@ import { push } from 'connected-react-router';
 import styled from 'styled-components';
 
 import config from '../../config.json';
-import { H1Section, H2Section, H3Section } from '../../componets/Layout';
+import { H1Section, H2Section, H3Section, ErrorSection } from '../../componets/Layout';
 import Loader from '../../componets/Loader';
 import RouteButton from '../../componets/RouteButton';
 import * as selectors from '../../store/selectors';
@@ -86,7 +86,7 @@ class Cvs extends Component {
     closeCv = id => this.props.cvsClose(id);
 
     render() {
-        const { cvs, closing, routePush } = this.props;
+        const { cvs, closing, routePush, error } = this.props;
 
         return (
             <Fragment>
@@ -107,6 +107,13 @@ class Cvs extends Component {
                         </div>
                     </TopContainer>                    
                 </H1Section>
+                {error &&
+                    <ErrorSection>
+                        <strong>{error}</strong><br/>
+                        <span>You can try to reload the application and try again. If an error occurred during transaction submission it does not mean that it failed. It can be API failure. Please wait some time and reload the app. </span>
+
+                    </ErrorSection>
+                }
                 <H2Section>
                     <CvsTable>
                         <thead>
@@ -185,7 +192,8 @@ function mapStateToProps(state) {
 
     return {
         cvs: selectors.cvs(state),
-        closing: selectors.cvsClosing(state)
+        closing: selectors.cvsClosing(state),
+        error: selectors.cvsError(state)
     };
 };
 

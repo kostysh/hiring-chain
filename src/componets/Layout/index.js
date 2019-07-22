@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 export const Page = styled.div`
@@ -102,6 +103,23 @@ export const H4Section = styled(Section)`
 background-color: #fafafa;
 
 `;
+
+const ErrorSectionOuter = styled(H2Section)`
+.message {
+    background-color: #ff7979;
+    color: white;
+    border-radius: 5px;
+    padding: 16px;
+}
+`;
+
+export const ErrorSection = ({ children }) => (
+    <ErrorSectionOuter>
+        <div className="message">
+            {children}
+        </div>
+    </ErrorSectionOuter>
+);
 
 export const SpaceSection = styled.div`
 flex-grow: 1;

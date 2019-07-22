@@ -30,3 +30,4 @@ export const jobsQuery = state => state.jobs.query;
 export const jobs = state => hashedObjToArray(state.jobs.jobs);
 export const jobsClosing = state => state.jobs.closing;
 export const jobsCache = state => filterByQuery(state);
+export const jobsError = state => state.jobs.error;
