@@ -9,7 +9,7 @@ A simple hiring Dapp on the Arweave blockchain
 - You can remove your own published jobs and CVs
 - You can make an application on the published job (job owner will see your application in jobs list)
 
-Application is constantly available on the link: [https://arweave.net/A5Y3DSzVgkFAHlx2lnPWRr_yzqKNr5JvzXICwmumFEY](https://arweave.net/A5Y3DSzVgkFAHlx2lnPWRr_yzqKNr5JvzXICwmumFEY)
+Application is constantly available on the link: [https://arweave.net/-Qa5gx8GK89ov5UvWSVZMi8FcEXIJ6EZxEL1nf_kTDY](https://arweave.net/-Qa5gx8GK89ov5UvWSVZMi8FcEXIJ6EZxEL1nf_kTDY)
 
 ## Initialisation
 ```sh
