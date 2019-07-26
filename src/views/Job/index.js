@@ -40,6 +40,17 @@ font-weight: normal;
 color: #004DBC;
 `;
 
+const InfoComment = styled.div`
+font-size: 11px;
+font-weight: normal;
+color: rgba(0,0,0,0.3);
+margin: 2px 0 20px 2px;
+
+.red {
+    color: darkred;
+}
+`;
+
 const ErrorsBlock = ({ errors }) => {
 
     if (!errors) {
@@ -94,6 +105,11 @@ class Job extends Component {
             type: 'array',
             required: false,
             message: 'Skills field have to be a list of tags'
+        },
+        info: {
+            type: 'string',
+            required: true,
+            message: 'Company information is required and should be empty'
         }
     };
 
@@ -105,7 +121,8 @@ class Job extends Component {
             remote: false,
             description: '',
             salary: '',
-            skills: []
+            skills: [],
+            info: ''
         },
         error: null
     };
@@ -167,7 +184,7 @@ class Job extends Component {
     });
 
     render() {
-        const { title, location, remote, description, salary } = this.state.values;
+        const { title, location, remote, description, salary, info } = this.state.values;
         const { error } = this.state;
 
         return (
@@ -238,9 +255,19 @@ class Job extends Component {
                             info="add tags by pressing comma or Enter button"
                             required={Job.model.skills.required}
                         />
+                        <Separator />
+                        <Field
+                            type="textarea"
+                            value={info} 
+                            rows="5"
+                            onChange={({ target: { value } }) => this.updateValue('info', value, true)}
+                            label="Company information" 
+                            required={Job.model.description.required}
+                        />
                     </FormOuter>
                 </H3Section>
                 <H4Section>
+                    <InfoComment>Fields marked by <span className="red">*</span> are required</InfoComment>
                     <Submit
                         background="#004DBC"
                         color="white"

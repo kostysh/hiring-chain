@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 
-import config from '../../config.json';
+// import config from '../../config.json';
 import { H1Section, H2Section, H3Section } from '../../componets/Layout';
 import ArLink from '../../componets/ArLink';
 import Loader from '../../componets/Loader';
@@ -72,6 +72,12 @@ a {
 }
 `;
 
+const Description = styled.div`
+white-space: pre-line;
+color: black;
+font-size: 16px;
+`;
+
 export default class CvDetails extends Component {
 
     state = {
@@ -115,7 +121,7 @@ export default class CvDetails extends Component {
                     }
                     {(!loading && record) &&
                         <Fragment>
-                            <Label>Title</Label>
+                            <Label>CV Title</Label>
                             <h2>{record.title}</h2>
                         </Fragment>
                     }
@@ -124,7 +130,7 @@ export default class CvDetails extends Component {
                     {(!loading && record) &&
                         <Fragment>
                             <Label>Description</Label>
-                            <p>{record.description}</p>
+                            <Description>{record.description}</Description>
                             <Space />
 
                             <Label>Professional profiles</Label>
@@ -151,14 +157,14 @@ export default class CvDetails extends Component {
                                 </Fragment>
                             }
                             
-                            <Label>Detailed CV file</Label>
+                            {/* <Label>Detailed CV file</Label>
                             <p>
                                 <a
                                     href={`${config.ipfs.gateway}/${record.ipfs}`}
                                     rel="noopener noreferrer" 
                                     target="_blank" 
                                 >{record.ipfs}</a>
-                            </p>
+                            </p> */}
                             
                         </Fragment>
                     }

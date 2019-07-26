@@ -40,6 +40,17 @@ font-weight: normal;
 color: #004DBC;
 `;
 
+const InfoComment = styled.div`
+font-size: 11px;
+font-weight: normal;
+color: rgba(0,0,0,0.3);
+margin: 2px 0 20px 2px;
+
+.red {
+    color: darkred;
+}
+`;
+
 const ErrorsBlock = ({ errors }) => {
 
     if (!errors) {
@@ -80,11 +91,11 @@ class Cv extends Component {
             required: false,
             message: 'Skills field have to be a list of tags'
         },
-        ipfs: {
-            type: 'ipfs',
-            required: true,
-            message: 'Detailed CV field have to contain a valid IPFS address of your deployed pdf file and should be empty'
-        }
+        // ipfs: {
+        //     type: 'ipfs',
+        //     required: true,
+        //     message: 'Detailed CV field have to contain a valid IPFS address of your deployed pdf file and should be empty'
+        // }
     };
 
     state = {
@@ -129,9 +140,9 @@ class Cv extends Component {
             case 'boolean':
                 validated = typeof value === 'boolean';
                 break;
-            case 'ipfs':
-                validated = !!value.match(/^Qm[1-9A-HJ-NP-Za-km-z]{44}(\/.*)?/);
-                break;
+            // case 'ipfs':
+            //     validated = !!value.match(/^Qm[1-9A-HJ-NP-Za-km-z]{44}(\/.*)?/);
+            //     break;
             default:                 
         }
 
@@ -208,7 +219,7 @@ class Cv extends Component {
                             info="add tags by pressing comma or Enter button"
                             required={Cv.model.skills.required}
                         />
-                        <Separator />
+                        {/* <Separator />
                         <Field
                             type="ipfs"
                             onChange={(value) => this.updateValue('ipfs', value, true)}
@@ -216,10 +227,11 @@ class Cv extends Component {
                             placeholder="click here to load file"
                             info="choose a file from the local disk and wait until upload finished"
                             required={Cv.model.ipfs.required}                            
-                        />
+                        /> */}
                     </FormOuter>
                 </H3Section>
                 <H4Section>
+                    <InfoComment>Fields marked by <span className="red">*</span> are required</InfoComment>
                     <Submit
                         background="#004DBC"
                         color="white"

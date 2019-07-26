@@ -65,15 +65,15 @@ flex-direction: row;
 }
 `;
 
-const IpfsLink = styled.a`
-color: #004DBC;
+// const IpfsLink = styled.a`
+// color: #004DBC;
 
-@media (max-width: 540px) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
-}
-`;
+// @media (max-width: 540px) {
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     word-break: break-all;
+// }
+// `;
 
 const AppliedList = styled.ul`
 list-style-type: none;
@@ -119,7 +119,7 @@ class Cvs extends Component {
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>File</th>
+                                {/* <th>File</th> */}
                                 <th>Applications</th>
                                 <th>Mined</th>
                                 <th>Actions</th>
@@ -133,14 +133,14 @@ class Cvs extends Component {
                                             onClick={() => routePush(`/cv/${cv.id}`)}
                                         >{cv.cv.title}</CvLink>
                                     </td>
-                                    <td>
+                                    {/* <td>
                                         <IpfsLink
                                             href={`${config.ipfs.gateway}/${cv.cv.ipfs}`}
                                             rel="noopener noreferrer" 
                                             target="_blank" 
                                             title="CV file on the public IPFS gateway"
                                         >{cv.cv.ipfs}</IpfsLink>
-                                    </td>
+                                    </td> */}
                                     <td>
                                         {(cv.applied && cv.applied.length > 0) &&
                                             <AppliedList>

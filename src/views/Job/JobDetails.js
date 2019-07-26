@@ -200,6 +200,11 @@ width: 14px;
 height: 14px;
 `;
 
+const Description = styled.div`
+white-space: pre-line;
+color: #7AADF6;
+`;
+
 class Apply extends Component {
     state = {
         opened: false
@@ -307,7 +312,7 @@ export default class JobDetails extends Component {
     render() {
         const { loading, record } = this.state;
         const { match: { params: { jobId }} } = this.props;
-
+        
         return (
             <Fragment>
                 <H1Section>
@@ -323,7 +328,7 @@ export default class JobDetails extends Component {
                         <Fragment>
                             <TitleContainer>
                                 <div>
-                                    <Label>Title</Label>
+                                    <Label>Job Title</Label>
                                     <h2>{record.title}</h2>
                                 </div>
                                 <div>
@@ -345,7 +350,7 @@ export default class JobDetails extends Component {
                             <Space />
 
                             <Label>Description</Label>
-                            <p>{record.description}</p>
+                            <Description>{record.description}</Description>
                             <Space />
 
                             {record.salary !== '' &&
@@ -362,7 +367,11 @@ export default class JobDetails extends Component {
                                     <Pills tags={record.skills} />
                                     <Space />
                                 </Fragment>
-                            }                            
+                            }
+                            
+                            <Label>Company info</Label>
+                            <Description>{record.info}</Description>
+                            <Space />
                         </Fragment>
                     }
                 </H3Section>

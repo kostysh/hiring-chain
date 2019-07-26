@@ -1,6 +1,6 @@
 {
   "name": "hiring-chain",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "license": "MIT",
   "dependencies": {
@@ -15,7 +15,7 @@
     "redux-saga": "1.0.5",
     "styled-components": "4.3.2",
     "ipfs-http-client": "33.1.0",
-    "arweave": "1.4.0"
+    "arweave": "1.4.1"
   },
   "devDependencies": {
     "arweave-deploy": "1.5.0"
