@@ -111,11 +111,25 @@ const ErrorSectionOuter = styled(H2Section)`
     border-radius: 5px;
     padding: 16px;
 }
+.version-message {
+    background-color: #ffbe79;
+    color: #28292e;
+    border-radius: 5px;
+    padding: 16px;
+}
 `;
 
 export const ErrorSection = ({ children }) => (
     <ErrorSectionOuter>
         <div className="message">
+            {children}
+        </div>
+    </ErrorSectionOuter>
+);
+
+export const VersionSection = ({ children }) => (
+    <ErrorSectionOuter>
+        <div className="version-message">
             {children}
         </div>
     </ErrorSectionOuter>

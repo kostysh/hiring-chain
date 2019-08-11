@@ -8,6 +8,7 @@ import packageJson from '../../../package.json';
 import { Page, Header, Footer, SpaceSection } from '../../componets/Layout';
 import Login from '../../componets/Login';
 import Menu from '../../componets/Menu';
+import CheckVersion from '../../componets/CheckVersion';
 
 const Logo = styled(Link)`
 font-family: 'Rubik', sans-serif;
@@ -60,6 +61,7 @@ export default class App extends Component {
                         <Login />
                     </Toolbar>
                 </Header>
+                <CheckVersion />
                 <Switch>
                     {routes.map((route, index) => (
                         <MakeRouteWithSubRoutes key={index} {...route} />                          
